@@ -1,0 +1,1 @@
+{"name":"magnolia","version":"1.0.0","private":true,"type":"module","scripts":{"dev":"node scripts/serve.mjs","build":"node scripts/build.mjs","check":"node --check app.js && node --check motion.js && node --check navigation.js && node --check scripts/serve.mjs && node --check scripts/build.mjs"}}

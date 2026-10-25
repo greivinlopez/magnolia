@@ -1,0 +1,9 @@
+{
+  "count": 181,
+  "fps": 18,
+  "duration": 10,
+  "width": 720,
+  "height": 1280,
+  "pattern": "assets/mobile/frames/frame-{index}.webp",
+  "poster": "assets/mobile/poster.webp"
+}

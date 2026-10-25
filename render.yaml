@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: magnolia
+    runtime: static
+    buildCommand: npm run build
+    staticPublishPath: ./dist
+    autoDeployTrigger: off

@@ -147,3 +147,16 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Magnolia local assets
+node_modules/
+dist/
+.DS_Store
+.env
+.env.*
+!.env.example
+assets/source/
+
+logo reference.png
+desktop prompt.md
+mobile prompt.md
