@@ -20,12 +20,13 @@ La vista local se sirve en http://localhost:4173. El sitio estático listo para 
 - `index.html`: textos de portada, enfoque y proceso.
 - `styles.css`: paleta, tipografía y distribución adaptable.
 - `style-tile.html`: tablero de dirección visual con los mismos estilos.
-- `assets/manifest.json`: secuencia y póster. No cambiar el número de fotogramas sin regenerar el manifiesto.
+- `assets/sequence.json`: índice de paquetes de escritorio. `assets/manifest.json` conserva la fuente de fotogramas para regenerarlos.
 - `app.js`: contenido y comportamiento de contacto.
-- `motion.js`: selección de secuencia, caché y cronologías de scroll.
+- `motion.js`: selección de secuencia, suavizado y cronologías de scroll.
+- `frame-store.js`: descargas agrupadas, prioridad de fotogramas y caché.
 - `navigation.js`: menú móvil accesible.
 - `mobile.css`: composición y navegación móvil.
-- `assets/mobile/manifest.json`: secuencia vertical independiente.
+- `assets/mobile/sequence.json`: índice de paquetes de la secuencia vertical independiente.
 
 La silueta transparente suministrada se conserva intacta en `assets/brand/magnolia-silhouette.png`. Se utiliza en cabecera, pie, enfoque y tablero visual, con fondos acordes a cada sección. El video termina en su último fotograma de la flor blanca, sin transición al logo ni pantalla final de marca.
 
@@ -39,8 +40,10 @@ El sitio se publica en Render desde la rama `main` de este repositorio. Los desp
 
 ## Medios
 
-El clip original se conserva localmente en `assets/source/magnolia-original.mp4`. La carpeta `assets/source` no se publica en el build ni se incluye en Git. La secuencia WebP es parte del sitio. Ver `PRODUCTION.md` para procedencia y límites.
+El clip original se conserva localmente en `assets/source/magnolia-original.mp4`. La carpeta `assets/source` no se publica en el build ni se incluye en Git. Los paquetes que contienen la secuencia WebP son parte del sitio. Ver `PRODUCTION.md` para procedencia y límites.
 
 ## Experiencia móvil
 
-El mismo sitio selecciona automáticamente la secuencia vertical hasta 760 px y la horizontal por encima de ese ancho. El póster también es responsive. Cabecera fija, menú modal con teclado y Escape, controles táctiles amplios y enlaces con compensación de cabecera. El recorrido activo móvil es 320svh; escritorio conserva 500svh. Se omiten los fotogramas con movimiento reducido o ahorro de datos. La caché mantiene como máximo 18 imágenes decodificadas y tres solicitudes simultáneas.
+El mismo sitio selecciona automáticamente la secuencia vertical hasta 760 px y la horizontal por encima de ese ancho. El póster también es responsive. Cabecera fija, menú modal con teclado y Escape, controles táctiles amplios y enlaces con compensación de cabecera. El recorrido activo móvil es 320svh; escritorio conserva 500svh. Se omiten los fotogramas con movimiento reducido o ahorro de datos. La caché mantiene como máximo 18 imágenes decodificadas, 16 MiB de datos comprimidos y dos solicitudes simultáneas. Las descargas comprimidas se reutilizan al retroceder.
+
+Para regenerar los paquetes después de cambiar los fotogramas: `npm run pack:frames`. Los nombres incorporan un hash del contenido; guarda también ambos archivos `sequence.json`. El build publica los paquetes y omite los fotogramas individuales. Ejecuta `npm test` para verificar prioridad, límites de memoria, fallos y limpieza.

@@ -52,3 +52,14 @@ Verificación: navegador integrado a 320×568, 390×844 y 430×932; escritorio a
 ## Vista previa al compartir
 
 Open Graph y Twitter Card incluidos directamente en el HTML, con URL canónica https://magnoliasostenible.com/. Imagen `assets/social/magnolia-share-v1.jpg`, 1200 × 630, 145,289 bytes. Generada con PicX `openai/gpt-image-2`, ID `img_301973d8e647`, 53 créditos reportados; adaptada al formato horizontal y comprimida a JPEG. El original permanece en assets/source. No se enviaron mensajes de prueba a terceros. Se verifica disponibilidad pública y metadatos; el renderizado final en WhatsApp depende de su cliente y caché.
+
+
+## Fluidez de scroll en red — 26 de octubre de 2026
+
+Se sustituyen las solicitudes individuales de fotogramas por paquetes de 12 imágenes WebP concatenadas. Ambos índices sequence.json indican el paquete, desplazamiento y longitud de cada imagen. Los bytes de las imágenes no cambian: verificados todos contra sus fuentes originales. Escritorio: 19 paquetes, 6,368,576 bytes; móvil: 16 paquetes, 6,988,730 bytes. No es una reducción del peso visual ni una medición de FPS; reduce las solicitudes necesarias para descargar una secuencia completa.
+
+El nuevo FrameStore realiza dos descargas simultáneas, prioriza el destino real del scroll, cancela una petición distante si bloquea un salto y conserva los datos comprimidos para evitar solicitudes repetidas al retroceder. Máximo 16 MiB comprimidos y 18 bitmaps decodificados, dos decodificaciones simultáneas. Libera imágenes y aborta descargas al cambiar de secuencia o salir. Movimiento reducido y ahorro de datos omiten la secuencia. El renderizador muestra el fotograma disponible más cercano, suaviza pasos de scroll con una constante de 65 ms, evita dibujar imágenes repetidas y mide el canvas al cambiar de tamaño.
+
+Descarga progresiva de la variante seleccionada; sólo se decodifica una ventana alrededor de la posición actual. El póster y el contenido permanecen disponibles mientras carga; fallos definitivos de descarga vuelven a la vista estática. El build limpia dist y excluye las carpetas frames para no publicar dos copias de la secuencia.
+
+Verificación: siete pruebas con demoras y fallos simulados cubren avance/retroceso sin redescarga, prioridad en saltos, concurrencia, frame cercano, reintentos, limpieza y presupuesto de memoria. Comparación binaria de todos los fotogramas. Revisión en navegador de escritorio y móvil a 390×844, incluyendo cambio de breakpoint y avance/retroceso. La fluidez en el teléfono físico y su conexión debe comprobarse allí; no se afirma una tasa de FPS medida.
